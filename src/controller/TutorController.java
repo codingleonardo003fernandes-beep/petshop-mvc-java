@@ -1,6 +1,6 @@
 package model.controller;
 
-import model.model.Tutor;
+import model.Tutor;
 import java.util.ArrayList;
 import java.util.List;
 
