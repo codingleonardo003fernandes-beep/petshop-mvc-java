@@ -1,6 +1,4 @@
-package model.model;
-
-import java.io.Serializable;
+package model;
 
 public class Funcionario extends Pessoa {
     private static final long serialVersionUID = 1L;
@@ -16,31 +14,33 @@ public class Funcionario extends Pessoa {
         this.salario = salario;
     }
 
-    public int getId() { return id; }
-    public String getCargo() { return cargo; }
-    public void setCargo(String cargo) { this.cargo = cargo; }
-    public double getSalario() { return salario; }
-    public void setSalario(double salario) { this.salario = salario; }
+    public int getId() {
+        return id;
+    }
 
-    public static class Relatorio implements Serializable {
-        private static final long serialVersionUID = 1L;
+    public String getCargo() {
+        return cargo;
+    }
 
-        private int id;
-        private String titulo;
-        private String filtro;
-        private String resultado;
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
 
-        public Relatorio(int id, String titulo, String filtro, String resultado) {
-            this.id = id;
-            this.titulo = titulo;
-            this.filtro = filtro;
-            this.resultado = resultado;
-        }
+    public double getSalario() {
+        return salario;
+    }
 
-        public int getId() { return id; }
-        public String getTitulo() { return titulo; }
-        public String getFiltro() { return filtro; }
-        public String getResultado() { return resultado; }
-        public void setResultado(String resultado) { this.resultado = resultado; }
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    @Override
+    public String toString() {
+        return "Funcionário #" + id
+                + " | Nome: " + getNome()
+                + " | Telefone: " + getTelefone()
+                + " | Endereço: " + getEndereco()
+                + " | Cargo: " + cargo
+                + " | Salário: R$ " + salario;
     }
 }

@@ -1,10 +1,14 @@
-package model.controller;
+package controller;
 
 import model.Funcionario;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FuncionarioController {
+public class FuncionarioController implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private List<Funcionario> funcionarios = new ArrayList<>();
     private int proximoId = 1;
 
@@ -13,11 +17,15 @@ public class FuncionarioController {
         funcionarios.add(f);
     }
 
-    public List<Funcionario> listar() { return funcionarios; }
+    public List<Funcionario> listar() {
+        return funcionarios;
+    }
 
     public Funcionario buscarPorId(int id) {
         for (Funcionario f : funcionarios) {
-            if (f.getId() == id) return f;
+            if (f.getId() == id) {
+                return f;
+            }
         }
         throw new IllegalArgumentException("Erro: Funcionário com ID " + id + " não encontrado.");
     }
@@ -34,5 +42,14 @@ public class FuncionarioController {
     public void deletar(int id) {
         Funcionario f = buscarPorId(id);
         funcionarios.remove(f);
+    }
+
+    public int getProximoId() {
+        return proximoId;
+    }
+
+    public void setFuncionarios(List<Funcionario> funcionarios, int proximoId) {
+        this.funcionarios = funcionarios;
+        this.proximoId = proximoId;
     }
 }

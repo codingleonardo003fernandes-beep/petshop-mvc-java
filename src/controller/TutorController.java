@@ -1,10 +1,14 @@
-package model.controller;
+package controller;
 
 import model.Tutor;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TutorController {
+public class TutorController implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private List<Tutor> tutores = new ArrayList<>();
     private int proximoId = 1;
 
@@ -13,11 +17,15 @@ public class TutorController {
         tutores.add(t);
     }
 
-    public List<Tutor> listar() { return tutores; }
+    public List<Tutor> listar() {
+        return tutores;
+    }
 
     public Tutor buscarPorId(int id) {
         for (Tutor t : tutores) {
-            if (t.getId() == id) return t;
+            if (t.getId() == id) {
+                return t;
+            }
         }
         throw new IllegalArgumentException("Erro: Tutor com ID " + id + " não encontrado.");
     }
@@ -42,5 +50,14 @@ public class TutorController {
     public void removerPet(int idTutor, String nomePet) {
         Tutor t = buscarPorId(idTutor);
         t.removerPet(nomePet);
+    }
+
+    public int getProximoId() {
+        return proximoId;
+    }
+
+    public void setTutores(List<Tutor> tutores, int proximoId) {
+        this.tutores = tutores;
+        this.proximoId = proximoId;
     }
 }
