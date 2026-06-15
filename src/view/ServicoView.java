@@ -15,6 +15,7 @@ public class ServicoView {
 
     public void exibirMenu() {
         int opcao = 0;
+
         while (opcao != 5) {
             System.out.println("\n=== MENU DE SERVIÇOS ===");
             System.out.println("1 - Cadastrar Serviço");
@@ -24,50 +25,80 @@ public class ServicoView {
             System.out.println("5 - Voltar");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine();
-
             try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+
                 switch (opcao) {
                     case 1:
                         System.out.print("Nome do serviço: ");
                         String nome = scanner.nextLine();
-                        System.out.print("Preço (ex: 50,00): ");
+
+                        System.out.print("Preço: ");
                         double preco = scanner.nextDouble();
+
                         System.out.print("Duração em minutos: ");
                         int duracao = scanner.nextInt();
+                        scanner.nextLine();
+
                         controller.cadastrar(nome, preco, duracao);
                         System.out.println("Serviço cadastrado com sucesso!");
                         break;
+
                     case 2:
                         System.out.println("\n--- Lista de Serviços ---");
+
+                        if (controller.listar().isEmpty()) {
+                            System.out.println("Nenhum serviço cadastrado.");
+                            break;
+                        }
+
                         for (Servico s : controller.listar()) {
-                            System.out.println("ID: " + s.getId() + " | " + s.getNome() + " | R$ " + s.calcularPreco());
+                            System.out.println(
+                                    "ID: " + s.getId()
+                                            + " | " + s.getNome()
+                                            + " | R$ " + s.calcularPreco()
+                                            + " | Duração: " + s.getDuracaoMinutos() + " min"
+                            );
                         }
                         break;
+
                     case 3:
                         System.out.print("ID do serviço a alterar: ");
                         int idAlt = scanner.nextInt();
                         scanner.nextLine();
+
                         System.out.print("Novo nome: ");
                         String novoNome = scanner.nextLine();
+
                         System.out.print("Novo preço: ");
                         double novoPreco = scanner.nextDouble();
-                        controller.alterar(idAlt, novoNome, novoPreco);
-                        System.out.println("Alterado com sucesso!");
+
+                        System.out.print("Nova duração em minutos: ");
+                        int novaDuracao = scanner.nextInt();
+                        scanner.nextLine();
+
+                        controller.alterar(idAlt, novoNome, novoPreco, novaDuracao);
+                        System.out.println("Serviço alterado com sucesso!");
                         break;
+
                     case 4:
                         System.out.print("ID do serviço a deletar: ");
                         int idDel = scanner.nextInt();
+                        scanner.nextLine();
+
                         controller.deletar(idDel);
-                        System.out.println("Deletado com sucesso!");
+                        System.out.println("Serviço deletado com sucesso!");
                         break;
+
                     case 5:
                         System.out.println("Voltando...");
                         break;
+
                     default:
                         System.out.println("Opção inválida!");
                 }
+
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             } catch (Exception e) {
