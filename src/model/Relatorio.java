@@ -1,19 +1,20 @@
 package model;
 
-// Esta classe guarda as informações calculadas para o relatório geral.
-public class Relatorio {
+import java.io.Serializable;
+
+public class Relatorio implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int totalAgendamentos;
     private double faturamentoTotal;
     private int totalConcluidos;
 
-    // Construtor do Relatório
     public Relatorio(int totalAgendamentos, double faturamentoTotal, int totalConcluidos) {
         this.totalAgendamentos = totalAgendamentos;
         this.faturamentoTotal = faturamentoTotal;
         this.totalConcluidos = totalConcluidos;
     }
 
-    // Exibe os números na tela de forma visual e organizada.
+
     public void exibirResumo() {
         System.out.println("\n====== RESUMO DO RELATÓRIO GERADO ======");
         System.out.println("Total de Agendamentos no Sistema : " + totalAgendamentos);

@@ -29,12 +29,12 @@ public class Servico implements BanhoTosa, Serializable {
         System.out.println("Executando o serviço de " + this.nome + " com todo cuidado!");
     }
 
-    // Sobrecarga de Métodos (Preço)
+
     public double calcularPreco() { return this.preco; }
     public double calcularPreco(double taxaUrgencia) { return this.preco + taxaUrgencia; }
     public double calcularPreco(double taxaUrgencia, double desconto) { return (this.preco + taxaUrgencia) - desconto; }
 
-    // Getters e Setters
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getNome() { return nome; }

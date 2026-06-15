@@ -2,10 +2,13 @@ package controller;
 
 import model.Agendamento;
 import model.Relatorio;
+import java.io.Serializable;
 import java.util.List;
 
+
 // Este controlador analisa a lista de agendamentos para calcular o faturamento.
-public class RelatorioController {
+public class RelatorioController implements Serializable{
+    private static final long serialVersionUID = 1L;
     private AgendamentoController agendamentoController;
 
     // Recebe o controlador de agendamentos para ler os dados da memória.

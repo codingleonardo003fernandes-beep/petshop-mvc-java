@@ -5,7 +5,7 @@ public class Cachorro extends Animal {
 
     private String porte;
 
-    // Usa o 'super' para mandar os dados comuns para a mãe salvar
+
     public Cachorro(String nome, int idade, String raca, String tutor, String porte) {
         super(nome, idade, raca, tutor);
         this.porte = porte;
@@ -14,7 +14,7 @@ public class Cachorro extends Animal {
     public String getPorte() { return porte; }
     public void setPorte(String porte) { this.porte = porte; }
 
-    // Sobrescrita do método abstrato da mãe
+
     @Override
     public String emitirSom() {
         return "Au Au!";

@@ -1,29 +1,35 @@
 package view;
 
 import controller.AgendamentoController;
+import controller.PetController;
+import controller.ServicoController;
 import model.Agendamento;
 import model.Animal;
 import model.Servico;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-// Esta classe cuida dos menus interativos de agendamento no terminal.
 public class AgendamentoView {
     private AgendamentoController controller;
+    private PetController petController;
+    private ServicoController servicoController;
     private Scanner scanner;
     private DateTimeFormatter formatter;
 
-    public AgendamentoView(AgendamentoController controller) {
+    public AgendamentoView(AgendamentoController controller, PetController petController, ServicoController servicoController) {
         this.controller = controller;
+        this.petController = petController;
+        this.servicoController = servicoController;
         this.scanner = new Scanner(System.in);
         this.formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     }
 
-    // Exibe o menu usando um loop do-while.
     public void exibirMenu() {
         int opcao = -1;
+
         do {
             System.out.println("\n--- GESTÃO DE AGENDAMENTOS ---");
             System.out.println("1. Novo Agendamento");
@@ -33,10 +39,9 @@ public class AgendamentoView {
             System.out.println("0. Voltar ao Menu Anterior");
             System.out.print("Escolha uma opção: ");
 
-            // Tratamento de Exceção: Protege o sistema se o usuário digitar letras por engano.
             try {
                 opcao = scanner.nextInt();
-                scanner.nextLine(); 
+                scanner.nextLine();
 
                 switch (opcao) {
                     case 1: menuCadastrar(); break;
@@ -46,59 +51,91 @@ public class AgendamentoView {
                     case 0: System.out.println("Retornando..."); break;
                     default: System.out.println("Opção inválida!");
                 }
+
             } catch (InputMismatchException e) {
                 System.out.println("[ERRO] Digite apenas números inteiros.");
-                scanner.nextLine(); // Limpa o erro do teclado
+                scanner.nextLine();
             }
+
         } while (opcao != 0);
     }
 
-    // Tela para cadastrar agendamento
     private void menuCadastrar() {
         System.out.println("\n--- NOVO AGENDAMENTO ---");
-        System.out.print("Digite o nome do Pet: ");
+
+        if (petController.listarTodos().isEmpty()) {
+            System.out.println("Nenhum pet cadastrado. Cadastre um pet antes de criar agendamento.");
+            return;
+        }
+
+        if (servicoController.listar().isEmpty()) {
+            System.out.println("Nenhum serviço cadastrado. Cadastre um serviço antes de criar agendamento.");
+            return;
+        }
+
+        System.out.println("\n--- PETS CADASTRADOS ---");
+        for (Animal pet : petController.listarTodos()) {
+            System.out.println(pet);
+        }
+
+        System.out.print("Digite o nome do pet: ");
         String nomePet = scanner.nextLine();
-        Animal petMock = new Animal(nomePet); 
 
-        System.out.print("Digite o Serviço (Banho / Tosa / Consulta): ");
-        String nomeServico = scanner.nextLine();
-        System.out.print("Digite o preço: R$ ");
-        double preco = scanner.nextDouble();
-        scanner.nextLine(); 
+        Animal petSelecionado = petController.buscarPorNome(nomePet);
 
-        Servico servicoMock = new Servico(nomeServico, preco); 
+        if (petSelecionado == null) {
+            System.out.println("[ERRO] Pet não encontrado.");
+            return;
+        }
+
+        System.out.println("\n--- SERVIÇOS CADASTRADOS ---");
+        for (Servico servico : servicoController.listar()) {
+            System.out.println("ID: " + servico.getId()
+                    + " | " + servico.getNome()
+                    + " | R$ " + servico.getPreco()
+                    + " | Duração: " + servico.getDuracaoMinutos() + " min");
+        }
+
+        System.out.print("Digite o ID do serviço: ");
+        int idServico = scanner.nextInt();
+        scanner.nextLine();
+
+        Servico servicoSelecionado = servicoController.buscarPorId(idServico);
 
         System.out.print("Digite a data e hora (Ex: 25/06/2026 14:30): ");
         String dataStr = scanner.nextLine();
 
         try {
             LocalDateTime dataHora = LocalDateTime.parse(dataStr, formatter);
-            controller.cadastrar(petMock, servicoMock, dataHora);
+            controller.cadastrar(petSelecionado, servicoSelecionado, dataHora);
+            System.out.println("Agendamento cadastrado com sucesso!");
+
         } catch (Exception e) {
             System.out.println("[ERRO] Formato de data errado. Use dd/MM/yyyy HH:mm");
         }
     }
 
-    // Tela de listagem
     private void menuListar() {
         System.out.println("\n--- LISTA DE AGENDAMENTOS ATIVOS ---");
+
         if (controller.listarTodos().isEmpty()) {
             System.out.println("Nenhum agendamento encontrado.");
             return;
         }
+
         for (Agendamento a : controller.listarTodos()) {
-            System.out.println(a); 
+            System.out.println(a);
         }
     }
 
-    // Tela de alteração
     private void menuAtualizar() {
         System.out.println("\n--- ATUALIZAR AGENDAMENTO ---");
         System.out.print("Digite o ID do agendamento: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();
 
         Agendamento a = controller.buscarPorId(id);
+
         if (a == null) {
             System.out.println("Agendamento não localizado.");
             return;
@@ -106,25 +143,27 @@ public class AgendamentoView {
 
         System.out.print("Nova data e hora (Ex: 25/06/2026 16:00): ");
         String dataStr = scanner.nextLine();
+
         System.out.print("Novo Status (Pendente / Concluído / Cancelado): ");
         String status = scanner.nextLine();
 
         try {
             LocalDateTime novaData = LocalDateTime.parse(dataStr, formatter);
+
             if (controller.alterar(id, novaData, status)) {
                 System.out.println("Agendamento modificado com sucesso!");
             }
+
         } catch (Exception e) {
             System.out.println("[ERRO] Erro ao processar a data.");
         }
     }
 
-    // Tela de exclusão
     private void menuDeletar() {
         System.out.println("\n--- EXCLUIR REGISTRO ---");
         System.out.print("Digite o ID a ser apagado: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();
 
         if (controller.deletar(id)) {
             System.out.println("Agendamento removido.");

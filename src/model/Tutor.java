@@ -7,7 +7,7 @@ public class Tutor extends Pessoa {
     private static final long serialVersionUID = 1L;
 
     private int id;
-    private List<String> pets; // composição → Tutor possui seus pets
+    private List<String> pets;
 
     public Tutor(int id, String nome, String telefone, String endereco) {
         super(nome, telefone, endereco);

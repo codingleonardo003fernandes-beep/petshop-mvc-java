@@ -13,7 +13,6 @@ public class Gato extends Animal {
     public boolean isEhCastrado() { return ehCastrado; }
     public void setEhCastrado(boolean ehCastrado) { this.ehCastrado = ehCastrado; }
 
-    // Sobrescrita do som do gato
     @Override
     public String emitirSom() {
         return "Miau!";
