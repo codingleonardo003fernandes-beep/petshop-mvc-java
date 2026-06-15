@@ -38,4 +38,12 @@ public class HistoricoController implements Serializable {
         }
         return filtrado;
     }
+    public int getProximoId() {
+        return this.proximoId;
+    }
+
+    public void setHistoricos(List<Historico> lista, int proximoId) {
+        this.historicos = lista;
+        this.proximoId = proximoId;
+    }
 }

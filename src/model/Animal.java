@@ -5,13 +5,13 @@ import java.io.Serializable;
 public abstract class Animal implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    // Atributos protegidos por encapsulamento (private)
+
     private String nome;
     private int idade;
     private String raca;
     private String tutor;
 
-    // Construtor base para a herança
+
     public Animal(String nome, int idade, String raca, String tutor) {
         this.nome = nome;
         this.idade = idade;
@@ -19,7 +19,7 @@ public abstract class Animal implements Serializable {
         this.tutor = tutor;
     }
 
-    // Getters e Setters obrigatórios para o encapsulamento
+
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
