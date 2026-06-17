@@ -4,7 +4,7 @@ import controller.RelatorioController;
 import model.Relatorio;
 import java.util.Scanner;
 
-// Esta classe cuida da tela do menu de relatórios do Petshop.
+
 public class RelatorioView {
     private RelatorioController controller;
     private Scanner scanner;

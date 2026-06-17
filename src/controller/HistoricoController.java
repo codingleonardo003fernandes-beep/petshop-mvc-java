@@ -17,18 +17,18 @@ public class HistoricoController implements Serializable {
         this.proximoId = 1;
     }
 
-    // Adiciona uma linha de histórico nova
+
     public void registrarEvento(String nomePet, String mensagem) {
         Historico novo = new Historico(proximoId++, nomePet, mensagem, LocalDateTime.now());
         historicos.add(novo);
     }
 
-    // Retorna todos os históricos
+
     public List<Historico> listarTodos() {
         return this.historicos;
     }
 
-    // Filtra o histórico mostrando apenas as ações de um pet específico
+
     public List<Historico> listarPorPet(String nomePet) {
         List<Historico> filtrado = new ArrayList<>();
         for (Historico h : historicos) {

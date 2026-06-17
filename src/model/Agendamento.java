@@ -4,19 +4,18 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-// Esta classe representa um agendamento no sistema.
-// Ela guarda qual pet vai fazer qual serviço, o dia e o horário.
+
 public class Agendamento implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    // Atributos privados (Encapsulamento)
+
     private int id;
     private Animal pet;       
     private Servico servico;   
     private LocalDateTime dataHora;
     private String status;     
 
-    // Construtor: Preenche os dados quando criamos um agendamento novo.
+
     public Agendamento(int id, Animal pet, Servico servico, LocalDateTime dataHora) {
         this.id = id;
         this.pet = pet;
@@ -25,7 +24,7 @@ public class Agendamento implements Serializable {
         this.status = "Pendente"; 
     }
 
-    // Getters e Setters: Permitem ler e modificar os atributos com segurança.
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -41,7 +40,7 @@ public class Agendamento implements Serializable {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    // Sobrescrita do toString: Mostra o objeto em formato de texto bonito no terminal.
+
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
