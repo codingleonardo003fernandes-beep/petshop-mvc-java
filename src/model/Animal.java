@@ -32,6 +32,6 @@ public abstract class Animal implements Serializable {
     public String getTutor() { return tutor; }
     public void setTutor(String tutor) { this.tutor = tutor; }
 
-    // Método abstrato: não tem código aqui, as filhas vão ter que criar o seu próprio som.
+   
     public abstract String emitirSom();
 }
