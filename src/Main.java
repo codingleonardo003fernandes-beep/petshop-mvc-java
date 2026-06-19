@@ -1,11 +1,7 @@
 import controller.AgendamentoController;
-import controller.FuncionarioController;
-import controller.HistoricoController;
-import controller.PagamentoController;
-import controller.PetController;
+
 import controller.RelatorioController;
-import controller.ServicoController;
-import controller.TutorController;
+import model.EstadoSistema;
 
 import view.AgendamentoView;
 import view.FuncionarioView;
@@ -31,31 +27,33 @@ public class Main {
     public static void main(String[] args) {
         EstadoSistema estado = carregarEstado();
 
-        TutorView tutorView = new TutorView(estado.tutorController);
-        FuncionarioView funcionarioView = new FuncionarioView(estado.funcionarioController);
-        HistoricoView historicoView = new HistoricoView(estado.historicoController);
-        PetView petView = new PetView(estado.petController, estado.historicoController);
-        ServicoView servicoView = new ServicoView(estado.servicoController);
+        TutorView tutorView = new TutorView(estado.getTutorController());
+        FuncionarioView funcionarioView = new FuncionarioView(estado.getFuncionarioController());
+        HistoricoView historicoView = new HistoricoView(estado.getHistoricoController());
+        PetView petView = new PetView(estado.getPetController(), estado.getHistoricoController());
+        ServicoView servicoView = new ServicoView(estado.getServicoController());
 
         AgendamentoView agendamentoView = new AgendamentoView(
-                estado.agendamentoController,
-                estado.petController,
-                estado.servicoController
+                estado.getAgendamentoController(),
+                estado.getPetController(),
+                estado.getServicoController()
         );
 
         PagamentoView pagamentoView = new PagamentoView(
-                estado.pagamentoController,
-                estado.agendamentoController
+                estado.getPagamentoController(),
+                estado.getAgendamentoController()
         );
 
-        RelatorioController relatorioController = new RelatorioController(estado.agendamentoController);
+        RelatorioController relatorioController = new RelatorioController(estado.getAgendamentoController());
         RelatorioView relatorioView = new RelatorioView(relatorioController);
 
         Scanner scanner = new Scanner(System.in);
         int opcao = -1;
 
         while (opcao != 0) {
+            limparTela();
             exibirMenuPrincipal();
+
 
             try {
                 opcao = Integer.parseInt(scanner.nextLine());
@@ -116,7 +114,7 @@ public class Main {
 
     private static void exibirMenuPrincipal() {
         System.out.println("\n====================================");
-        System.out.println("       SISTEMA PET SHOP MVC");
+        System.out.println("       SISTEMA - PET COM PET");
         System.out.println("====================================");
         System.out.println("1 - Gerenciar Tutores");
         System.out.println("2 - Gerenciar Funcionários");
@@ -129,6 +127,11 @@ public class Main {
         System.out.println("9 - Salvar Dados");
         System.out.println("0 - Salvar e Sair");
         System.out.print("Escolha uma opção: ");
+    }
+    private static void limparTela() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
     }
 
     private static EstadoSistema carregarEstado() {
@@ -152,17 +155,5 @@ public class Main {
         } catch (Exception e) {
             System.out.println("[ERRO] Não foi possível salvar os dados: " + e.getMessage());
         }
-    }
-
-    private static class EstadoSistema implements Serializable {
-        private static final long serialVersionUID = 1L;
-
-        private TutorController tutorController = new TutorController();
-        private FuncionarioController funcionarioController = new FuncionarioController();
-        private PetController petController = new PetController();
-        private HistoricoController historicoController = new HistoricoController();
-        private ServicoController servicoController = new ServicoController();
-        private AgendamentoController agendamentoController = new AgendamentoController();
-        private PagamentoController pagamentoController = new PagamentoController();
     }
 }
