@@ -1,6 +1,6 @@
-import controller.AgendamentoController;
-
+import controller.PersistenciaController;
 import controller.RelatorioController;
+
 import model.EstadoSistema;
 
 import view.AgendamentoView;
@@ -12,20 +12,13 @@ import view.RelatorioView;
 import view.ServicoView;
 import view.TutorView;
 
-import util.ArquivoUtil;
-
-import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Main {
 
-    private static final String PASTA_DADOS = "dados";
-    private static final String ARQUIVO_ESTADO = "dados/sistema_petshop.dat";
-
     public static void main(String[] args) {
-        EstadoSistema estado = carregarEstado();
+        PersistenciaController persistenciaController = new PersistenciaController();
+        EstadoSistema estado = persistenciaController.carregarEstado();
 
         TutorView tutorView = new TutorView(estado.getTutorController());
         FuncionarioView funcionarioView = new FuncionarioView(estado.getFuncionarioController());
@@ -54,7 +47,6 @@ public class Main {
             limparTela();
             exibirMenuPrincipal();
 
-
             try {
                 opcao = Integer.parseInt(scanner.nextLine());
 
@@ -62,44 +54,34 @@ public class Main {
                     case 1:
                         tutorView.exibirMenu();
                         break;
-
                     case 2:
                         funcionarioView.exibirMenu();
                         break;
-
                     case 3:
                         petView.exibirMenu();
                         break;
-
                     case 4:
                         servicoView.exibirMenu();
                         break;
-
                     case 5:
                         agendamentoView.exibirMenu();
                         break;
-
                     case 6:
                         pagamentoView.exibirMenu();
                         break;
-
                     case 7:
                         historicoView.exibirMenu();
                         break;
-
                     case 8:
                         relatorioView.exibirMenu();
                         break;
-
                     case 9:
-                        salvarEstado(estado);
+                        persistenciaController.salvarEstado(estado);
                         break;
-
                     case 0:
-                        salvarEstado(estado);
+                        persistenciaController.salvarEstado(estado);
                         System.out.println("Sistema encerrado. Dados salvos com sucesso!");
                         break;
-
                     default:
                         System.out.println("Opção inválida!");
                 }
@@ -128,32 +110,10 @@ public class Main {
         System.out.println("0 - Salvar e Sair");
         System.out.print("Escolha uma opção: ");
     }
+
     private static void limparTela() {
         for (int i = 0; i < 50; i++) {
             System.out.println();
-        }
-    }
-
-    private static EstadoSistema carregarEstado() {
-        try {
-            EstadoSistema estado = (EstadoSistema) ArquivoUtil.carregarObjeto(ARQUIVO_ESTADO);
-            System.out.println("Dados carregados com sucesso!");
-            return estado;
-
-        } catch (Exception e) {
-            System.out.println("Nenhum dado salvo encontrado. Iniciando sistema novo.");
-            return new EstadoSistema();
-        }
-    }
-
-    private static void salvarEstado(EstadoSistema estado) {
-        try {
-            Files.createDirectories(Path.of(PASTA_DADOS));
-            ArquivoUtil.salvarObjeto(estado, ARQUIVO_ESTADO);
-            System.out.println("Dados salvos com sucesso!");
-
-        } catch (Exception e) {
-            System.out.println("[ERRO] Não foi possível salvar os dados: " + e.getMessage());
         }
     }
 }
